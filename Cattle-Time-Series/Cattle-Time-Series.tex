@@ -1,0 +1,1979 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Cattle-Time-Series}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    
+
+    Este é um trabalho de previsão de séries temporais agrícolas mais
+especificamente de indicadores de preços pecuários do Boi Gordo e
+Bezerro mensais. Ambas séries foram coletadas e podem ser encontradas
+facilmente do site da \href{https://www.cepea.esalq.usp.br/br}{CEPEA -
+Centro de Estudos Avançados em Economia Aplicada}.
+
+A série referente aos preços do Boi Gordo é o principal indicador usado
+como base para criação e formação de preços para os contratos futuros do
+Boi Gordo da \href{http://www.b3.com.br/pt_br/}{B3}. Sobre a metólogia
+usada para criação deste indicador é feita uma média dos preços da
+arroba do boi gordo de todas as regiões do estado de São Paulo. Para
+poder encontrar mais informações referentes a métodologia utilizada para
+criação deste indicador acesse este
+\href{https://www.cepea.esalq.usp.br/upload/kceditor/files/Cepea_B3_Metodologia_Indicador_BOI_02_01_2020.pdf}{link}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} carregando as bibliotecas utilizadas}
+
+\PY{c+c1}{\PYZsh{} Imports para manipulação de dados}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{itertools}
+
+\PY{c+c1}{\PYZsh{} Imports para visualização de dados}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+\PY{k+kn}{import} \PY{n+nn}{plotly} \PY{k}{as} \PY{n+nn}{py}
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{express} \PY{k}{as} \PY{n+nn}{px}
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{graph\PYZus{}objs} \PY{k}{as} \PY{n+nn}{go} 
+\PY{k+kn}{from} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{offline} \PY{k+kn}{import} \PY{n}{download\PYZus{}plotlyjs}\PY{p}{,} \PY{n}{init\PYZus{}notebook\PYZus{}mode}\PY{p}{,} \PY{n}{plot}\PY{p}{,} \PY{n}{iplot}
+\PY{k+kn}{from} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{subplots} \PY{k+kn}{import} \PY{n}{make\PYZus{}subplots}
+\PY{k+kn}{from} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{figure\PYZus{}factory} \PY{k+kn}{import} \PY{n}{create\PYZus{}distplot}
+
+\PY{c+c1}{\PYZsh{} Imports para modelagem preditiva}
+\PY{k+kn}{import} \PY{n+nn}{statsmodels}
+\PY{k+kn}{import} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{api} \PY{k}{as} \PY{n+nn}{sm}
+\PY{k+kn}{import} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{tsa}\PY{n+nn}{.}\PY{n+nn}{api} \PY{k}{as} \PY{n+nn}{smt}
+\PY{k+kn}{import} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{stats} \PY{k}{as} \PY{n+nn}{sms}
+\PY{k+kn}{import} \PY{n+nn}{pmdarima} \PY{k}{as} \PY{n+nn}{pm}
+\PY{k+kn}{from} \PY{n+nn}{pandas}\PY{n+nn}{.}\PY{n+nn}{plotting} \PY{k+kn}{import} \PY{n}{autocorrelation\PYZus{}plot}
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats} \PY{k+kn}{import} \PY{n}{boxcox}
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{special} \PY{k+kn}{import} \PY{n}{inv\PYZus{}boxcox}
+\PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{graphics} \PY{k+kn}{import} \PY{n}{tsaplots}
+\PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{tsa}\PY{n+nn}{.}\PY{n+nn}{seasonal} \PY{k+kn}{import} \PY{n}{seasonal\PYZus{}decompose}
+\PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{tsa}\PY{n+nn}{.}\PY{n+nn}{stattools} \PY{k+kn}{import} \PY{n}{adfuller}\PY{p}{,} \PY{n}{kpss}
+\PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{tsa}\PY{n+nn}{.}\PY{n+nn}{arima\PYZus{}model} \PY{k+kn}{import} \PY{n}{ARIMA}
+\PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{n+nn}{.}\PY{n+nn}{stattools} \PY{k+kn}{import} \PY{n}{jarque\PYZus{}bera}
+\PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{graphics}\PY{n+nn}{.}\PY{n+nn}{tsaplots} \PY{k+kn}{import} \PY{n}{plot\PYZus{}acf}
+\PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{graphics}\PY{n+nn}{.}\PY{n+nn}{tsaplots} \PY{k+kn}{import} \PY{n}{plot\PYZus{}pacf}
+
+\PY{c+c1}{\PYZsh{} Imports para métricas e performance do modelo}
+\PY{k+kn}{import} \PY{n+nn}{math}
+\PY{k+kn}{from} \PY{n+nn}{math} \PY{k+kn}{import} \PY{n}{sqrt} 
+\PY{k+kn}{import} \PY{n+nn}{sklearn}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k+kn}{import} \PY{n}{mean\PYZus{}squared\PYZus{}error} 
+
+\PY{c+c1}{\PYZsh{} Filtrando os avisos}
+\PY{k+kn}{import} \PY{n+nn}{sys}
+\PY{k+kn}{import} \PY{n+nn}{warnings}
+\PY{n}{warnings}\PY{o}{.}\PY{n}{filterwarnings}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ignore}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Configurando o estilo de gráfico utilizado}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{figure.figsize}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{10}
+\PY{n}{plt}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fivethirtyeight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Carrega as séries históricas de preços do Boi Gordo\PYZhy{}SP e Bezerro\PYZhy{}MS}
+\PY{n}{bg} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Boi\PYZhy{}Gordo\PYZhy{}SP\PYZhy{}B3.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Após carregados os dados referente as duas séries podemos ver as cinco
+primeiras linhas do conjunto de dados e também algumas informações
+referentes ao formato que eles estão.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Checa as primeiras linhas da série contendo os preços do Boi Gordo}
+\PY{n}{bg}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+         Data À vista R\$ À vista US\$
+0  23/07/1997      26,67       24,65
+1  24/07/1997      26,67       24,65
+2  25/07/1997      26,71       24,68
+3  28/07/1997      26,74        24,7
+4  29/07/1997      26,77       24,72
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Checa as informações sobre o tipo de dados da série do Boi Gordo}
+\PY{n}{bg}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 5675 entries, 0 to 5674
+Data columns (total 3 columns):
+ \#   Column       Non-Null Count  Dtype
+---  ------       --------------  -----
+ 0   Data         5675 non-null   object
+ 1   À vista R\$   5675 non-null   object
+ 2   À vista US\$  5675 non-null   object
+dtypes: object(3)
+memory usage: 133.1+ KB
+    \end{Verbatim}
+
+    Como o pandas não reconhece valores dos preços que estão são separados
+com ``,'' ao invez de ``.'', teremos que relizar esta substituição além
+de converter o tipo de dados para o formato ``float64'' para facilitar a
+análise que será feita adiante.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Substituindo a virgulo por ponto das séries}
+
+\PY{c+c1}{\PYZsh{} Boi Gordo \PYZhy{} SP}
+\PY{n}{bg}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{À vista R\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{bg}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{À vista R\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n+nb}{str}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{bg}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{À vista R\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{bg}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{À vista R\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float64}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Quanto a data das duas séries, essas terão que ser transformadas em para
+o tipo \textbf{``datetime''} do pandas para e também se tornarão o
+índice do conjunto de dados, isso é feito para que possa tornar mais
+fácil a manipulação dos dados.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Alterando o tipo do índice}
+
+\PY{c+c1}{\PYZsh{} Boi Gordo \PYZhy{} SP}
+\PY{n}{bg}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{bg}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{infer\PYZus{}datetime\PYZus{}format}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Colocando a data como índice}
+
+\PY{c+c1}{\PYZsh{} Boi Gordo \PYZhy{} SP}
+\PY{n}{bg} \PY{o}{=} \PY{n}{bg}\PY{o}{.}\PY{n}{set\PYZus{}index}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Nos dois conjunto de dados retirados da CEPEA/ESALQ, vieram com uma
+coluna com os valores relativos da arroba do boi gordo e do bezerro em
+Dollar US\$.
+
+Para esta análise, será feita apenas para os valores em Reais R\$,
+portanto vamos excluir a coluna referente aos preços em Dollar de ambos
+os conjunto de dados.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Excluindo valores em Dollar US\PYZdl{}}
+\PY{n}{bg}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{À vista US\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Agora que os conjuntos de dados já estão organizados, vamos partir para
+a fase de análise exploratória do conjunto.
+
+Para se manter uma ordem, vamos realizar primeiro a análise completa e
+previsão dos preços do boi gordo, em seguida realizar a análise do
+conjunto de dados do bezerro e, por fim, realizar a previsões com os
+modelos. Logo de início, vamos vizualizar a evulação dos preços do Boi
+Gordo - SP.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Evolução dos preços do Boi Gordo \PYZhy{} SP}
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{line}\PY{p}{(}\PY{n}{bg}\PY{p}{,} 
+              \PY{n}{x}\PY{o}{=}\PY{n}{bg}\PY{o}{.}\PY{n}{index}\PY{p}{,} 
+              \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{À vista R\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+              \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Evolução Diária dos Preços do Boi Gordo \PYZhy{} SP}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Define o layout}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{xaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Período}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{yaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valor R\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{width}\PY{o}{=}\PY{l+m+mi}{950}\PY{p}{,} 
+                  \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{540}\PY{p}{)}
+    
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Com base no gráfico acima podemos engergar que os preços para arroba do
+boi gordo seguem uma tendência de alta desde da criação deste indicador,
+passando apenas por pequenas quedas e em seguida retornando a sua
+tendência ascendente original. Tal padrão além de indicar uma tendência
+de alta nos preços, também apresenta certo grau de sazonalidade em
+algumas épocas do ano.
+
+O nosso objetivo é realizar a previsão com base no preço médio mensal,
+por isso vamos realizar tal transformação e prosseguir com a análise
+exploratória dos preços.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Pegando os valores médios mensais dos preços do Boi Gordo}
+\PY{n}{bg} \PY{o}{=} \PY{n}{bg}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{À vista R\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{resample}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Evolução dos preços do Boi Gordo \PYZhy{} SP}
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{line}\PY{p}{(}\PY{n}{bg}\PY{p}{,} 
+              \PY{n}{x}\PY{o}{=}\PY{n}{bg}\PY{o}{.}\PY{n}{index}\PY{p}{,} 
+              \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{À vista R\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+              \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Evolução do Preço Médio Mensal do Boi Gordo \PYZhy{} SP}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Define o layout}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{xaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Período}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{yaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valor R\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{width}\PY{o}{=}\PY{l+m+mi}{950}\PY{p}{,} 
+                  \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{540}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_18_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Com os preços médio, fica mais claro a visualização da tendência
+ascendente do preço da arroba do boi gordo. Dando continuidade na
+análise exploratória, vamos checar a distribuição dos preços médio
+mensais para tentar descobrir algum padrão nos dados.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Histograma e Distplot do preço do Boi Gordo}
+\PY{n}{fig} \PY{o}{=} \PY{n}{create\PYZus{}distplot}\PY{p}{(}\PY{p}{[}\PY{n}{bg}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Distribuição dos Preços Mensais}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Pela distribuição dos preços médios nao conseguimos encontrar qualquer
+padrão aparente que possamos análisar com mais cuidado. Para tentar
+entender mais o preço médio da arroba do boi gordo vamos olhar para mais
+dois outros gráficos o boxplot e violin plot para obter mais
+informações, porém dessa vez com um olhar sobre possíveis
+\textbf{``outliers''} (preços que estão muito fora do padrão).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Checando os outliers por meio do Boxplot e violin plot}
+
+\PY{c+c1}{\PYZsh{} Criando os subplots}
+\PY{n}{fig} \PY{o}{=} \PY{n}{make\PYZus{}subplots}\PY{p}{(}\PY{n}{rows}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{cols}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Box plot dos preços da arroba do boi gordo}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Box}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{n}{bg}\PY{p}{)}\PY{p}{,} \PY{n}{row}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{col}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Violin plot dos preços da arroba do boi gordo}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Violin}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{n}{bg}\PY{p}{,} \PY{n}{box\PYZus{}visible}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{,} \PY{n}{row}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{col}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Mostra os gráficos}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Além das medidas de tendência central que são mostradas ao longo dos
+dois gráficos, fica dificíl enxergar algum padrão que não seja a
+tendência ascendente dos preços. Porém, e se tentássemos olhar para
+esses gráficos diminuindo a sua granularidade.
+
+Nos dois graficos a seguir vamos checar os box plots para cada ano da
+série histórica seguido por um boxplot para tentar ver o comportamento
+dos preços de mês a mês a cada ano.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Box plot para cada ano presente na série histórica}
+
+\PY{c+c1}{\PYZsh{} Cria o gráfico}
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{box}\PY{p}{(}\PY{n}{bg}\PY{p}{,} 
+             \PY{n}{x}\PY{o}{=}\PY{n}{bg}\PY{o}{.}\PY{n}{index}\PY{o}{.}\PY{n}{year}\PY{p}{,} 
+             \PY{n}{y}\PY{o}{=}\PY{n}{bg}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Define o layout}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{xaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Período}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{yaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valor R\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{width}\PY{o}{=}\PY{l+m+mi}{950}\PY{p}{,} 
+                  \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{540}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Mostra o gráfico}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Box plot para cada mês presente na série histórica}
+
+\PY{c+c1}{\PYZsh{} Cria o gráfico}
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{box}\PY{p}{(}\PY{n}{bg}\PY{p}{,} 
+             \PY{n}{x}\PY{o}{=}\PY{n}{bg}\PY{o}{.}\PY{n}{index}\PY{o}{.}\PY{n}{month}\PY{p}{,} 
+             \PY{n}{y}\PY{o}{=}\PY{n}{bg}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Define o layout}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{xaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mês}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{yaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valor R\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{width}\PY{o}{=}\PY{l+m+mi}{950}\PY{p}{,} 
+                  \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{540}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Mostra o gráfico}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_25_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Por meio do último gráfico podemos notar que os preços médio relativos
+aos meses de junho a outubro são menores do que os demais. Sendo assim,
+poderiam ser esses meses os melhores para a compra do boi gordo? .
+
+Agora que análise exploratória esta terminada, vamos realizar a
+decomposição da série histórica dos preços do boi gordo. O objetivo da
+decomposição de séries temporais é aumentar nossa compreensão dos dados,
+onde dividimos as séries em vários componentes. Isso irá nos fornecer
+informações em termos de complexidade de modelagem e quais abordagens
+devem ser seguidas para capturar com precisão cada um dos componentes.
+
+Esses componentes podem ser divididos em dois tipos: sistemático e não
+sistemático. Os sistemáticos são caracterizados pela consistência e pelo
+fato de poderem ser descritos e modelados. Por outro lado, os não
+sistemáticos não podem ser modelados diretamente.
+
+A seguir estão os componentes sistemáticos:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{nível}: o valor médio da série;
+\item
+  \textbf{tendência}: uma estimativa da tendência, ou seja, a mudança de
+  valor entre sucessivas pontos de tempo a qualquer momento. Pode ser
+  associado à inclinação(crescente/decrescente) da série;
+\item
+  \textbf{sazonalidade}: Desvios da média causada pela repetição de
+  ciclos de curto prazo.
+\end{itemize}
+
+O seguinte é o componente não sistemático:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{ruído}: A variação aleatória na série.
+\end{itemize}
+
+Existem dois tipos de modelos usados para decompor séries temporais:
+\textbf{aditivo} e \textbf{multiplicativo}.
+
+A seguir, são apresentadas as características do modelo aditivo: * Forma
+do modelo: \(y_t = nível + tendência + sazonalidade + ruído\); * Modelo
+linear: as mudanças ao longo do tempo são consistentes em tamanho; * A
+tendência é linear (reta); * Sazonalidade linear com a mesma frequência
+(largura) e amplitude (altura) dos ciclos ao longo do tempo.
+
+A seguir, são apresentadas as características do modelo multiplicativo:
+* Forma do modelo: \(y_t = nível * tendência * sazonalidade * ruído\); *
+Modelo não linear: as mudanças ao longo do tempo não são consistentes em
+tamanho, por exemplo, tendência exponencial; * A não curva linear; *
+Sazonalidade não linear com frequência crescente/decrescente e amplitude
+de ciclos ao longo do tempo;
+
+Um modelo multiplicativo é mais apropriado para esta série pois a mesma
+parece aumentar os valores a uma taxa não linear.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cria uma função para Decomposição da série temporal}
+\PY{k}{def} \PY{n+nf}{series\PYZus{}decompose}\PY{p}{(}\PY{n}{serie}\PY{p}{)}\PY{p}{:}
+    
+    \PY{c+c1}{\PYZsh{} Decomposição sazonal}
+    \PY{n}{decomposition} \PY{o}{=} \PY{n}{seasonal\PYZus{}decompose}\PY{p}{(}\PY{n}{serie}\PY{p}{,} \PY{n}{model}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{multiplicative}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{period}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Cria os subplots}
+    \PY{n}{fig} \PY{o}{=} \PY{n}{make\PYZus{}subplots}\PY{p}{(}\PY{n}{rows}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{cols}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Cria os gráficos de linhas para cada componente da série de preços}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{append\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{serie}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{decomposition}\PY{o}{.}\PY{n}{observed}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Observado}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{row}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{col}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{append\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{serie}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{decomposition}\PY{o}{.}\PY{n}{trend}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Tendência}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{row}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{col}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{append\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{serie}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{decomposition}\PY{o}{.}\PY{n}{seasonal}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Sazonalidade}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{row}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{col}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{append\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{serie}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{decomposition}\PY{o}{.}\PY{n}{resid}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ruido}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{row}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{col}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Define o layout}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{width}\PY{o}{=}\PY{l+m+mi}{900}\PY{p}{,} \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{540}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} Mostra o gráfico}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{series\PYZus{}decompose}\PY{p}{(}\PY{n}{bg}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Com a decomposição mostrada acima fica muito mais claro enxergar a
+tendência ascedente dos preços da arroba do boi gordo. Já a sazonalidade
+fica evidente que os preços tendem a ter um patamar durante maio, depois
+passam a subir até novembro e posteriormente passando a decair a partir
+de dezembro até maio do próximo ano.
+
+Para mostrar que esta decomposição faz sentido, podemos observar o
+componente \textbf{ruido}. Se este não apresentar um padrão discernível
+o ajuste faz sentido, em outras palavras, o componente aleatório é
+realmente aleatório.
+
+    Uma série temporal estacionária é uma série em que propriedades
+estatísticas como média, variância e a autocorrelação são constantes ao
+longo do tempo. A estacionariedade é uma característica desejada das
+séries temporais, pois torna mais viável a modelagem e extrapolação
+(previsão) para o futuro.
+
+\textbf{Média Constante}
+
+Uma série estacionária tem média constante durante o tempo, não existe
+tendências de alta ou de baixa. A razão disso é que tendo uma média
+constante com variações ao redor desta média fica muito mais fácil de
+extrapolar ao futuro.
+
+\textbf{Variância Constante} Quando a série tem variância constante,
+temos ideia da variação padrão em relação à média, quando a variância
+não é constante a previsão provavelmente vai ter erros maiores em
+determinados períodos e estes períodos não serão previsíveis, pois
+nestes casos espera-se que a variância permaneça inconstante durante o
+tempo, inclusive no futuro.
+
+\textbf{Série Autocorrelacionada} Em uma série temporal, não há como
+desconsiderar a estrutura de dependência das observações. Quando duas
+variáveis tem variação semelhante em relação ao desvio padrão pode-se
+dizer que as variáveis são correlacionadas.
+
+Por exemplo, a quantidade vendida de sorvete em janeiro pode estar
+relacionada à quantidade vendida em dezembro, que por sua vez pode estar
+relacionada com a de novembro e assim por diante. Dessa forma, a
+utilização desses modelos pode gerar resultados enviesados e que não
+refletem a realidade.
+
+\textbf{A autocorrelação é definida como uma observação num determinado
+instante está relacionada às observações passadas}. A autocorrelação é
+uma ferramenta matemática para encontrar padrões de repetição, como a
+presença de um sinal periódico obscurecidos pelo ruído. Um diagrama de
+autocorrelações apresenta os valores de autocorrelação de uma amostra
+versus o intervalo de tempo em que foi calculado. Autocorrelações devem
+ser próximas de zero para aleatoriedade. \textbf{A ocorrência de não
+estacionariedade é denotada pela lenta queda da ACF nos primeiros lags
+da série}. Isto significa que a série deve ser diferenciada, e que um
+modelo \textbf{ARIMA} ou \textbf{SARIMA} deve ser aplicado.
+
+A identificação da autocorrelação é feita através da \textbf{Função de
+Autocorrelação} (\textbf{ACF -- Autocorrelation Function}), mostrada
+abaixo. Além disso, testes como o de \textbf{Durbin Watson} auxiliam na
+identificação da autocorrelação de primeira ordem.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{testa\PYZus{}estacionaridade}\PY{p}{(}\PY{n}{serie}\PY{p}{)}\PY{p}{:}
+    
+    \PY{c+c1}{\PYZsh{} Calcula estatísticas móveis}
+    \PY{n}{rolmean} \PY{o}{=} \PY{n}{serie}\PY{o}{.}\PY{n}{rolling}\PY{p}{(}\PY{n}{window} \PY{o}{=} \PY{l+m+mi}{12}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+    \PY{n}{rolstd} \PY{o}{=} \PY{n}{serie}\PY{o}{.}\PY{n}{rolling}\PY{p}{(}\PY{n}{window} \PY{o}{=} \PY{l+m+mi}{12}\PY{p}{)}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Plot das estatísticas móveis}
+    \PY{n}{fig} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Figure}\PY{p}{(}\PY{p}{)}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{serie}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{serie}\PY{p}{,} \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Preços}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{rolmean}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{rolmean}\PY{p}{,} \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Média}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{rolstd}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{rolstd}\PY{p}{,} \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Desvio Padrão}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}xaxes}\PY{p}{(}\PY{n}{rangeslider\PYZus{}visible}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Teste Dickey\PYZhy{}Fuller:}
+    \PY{c+c1}{\PYZsh{} Print}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Resultado do Teste Dickey\PYZhy{}Fuller:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Teste}
+    \PY{n}{adfuller\PYZus{}test} \PY{o}{=} \PY{n}{adfuller}\PY{p}{(}\PY{n}{serie}\PY{p}{,} \PY{n}{autolag} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AIC}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Formatando a saída}
+    \PY{n}{adfuller\PYZus{}saida} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{adfuller\PYZus{}test}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,} \PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Estatística do Teste}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Valor\PYZhy{}p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Número de Lags Consideradas}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Número de Observações Usadas}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Loop por cada item da saída do teste}
+    \PY{k}{for} \PY{n}{key}\PY{p}{,} \PY{n}{value} \PY{o+ow}{in} \PY{n}{adfuller\PYZus{}test}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{adfuller\PYZus{}saida}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Valor Crítico (}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{o}{\PYZpc{}}\PY{k}{key}] = value
+
+    \PY{c+c1}{\PYZsh{} Print}
+    \PY{n+nb}{print} \PY{p}{(}\PY{n}{adfuller\PYZus{}saida}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Testa o valor\PYZhy{}p}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Conclusão:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{if} \PY{n}{adfuller\PYZus{}saida}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.05}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{O valor\PYZhy{}p é maior que 0.05 e, portanto, não temos evidências para rejeitar a hipótese nula.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Essa série provavelmente não é estacionária.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{O valor\PYZhy{}p é menor que 0.05 e, portanto, temos evidências para rejeitar a hipótese nula.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Essa série provavelmente é estacionária.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+    
+    \PY{c+c1}{\PYZsh{} Teste KPSS:}
+    \PY{c+c1}{\PYZsh{} Print}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Resultado do KPPS:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Teste}
+    \PY{n}{kpss\PYZus{}test} \PY{o}{=} \PY{n}{kpss}\PY{p}{(}\PY{n}{serie}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Formatando a saída}
+    \PY{n}{kpss\PYZus{}saida} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{kpss\PYZus{}test}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,} \PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Estatística do Teste}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                                    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Valor\PYZhy{}p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                                    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Número de Lags Consideradas}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Loop por cada item da saída do teste}
+    \PY{k}{for} \PY{n}{key}\PY{p}{,} \PY{n}{value} \PY{o+ow}{in} \PY{n}{kpss\PYZus{}test}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{kpss\PYZus{}saida}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Valor Crítico (}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{o}{\PYZpc{}}\PY{k}{key}] = value
+
+    \PY{c+c1}{\PYZsh{} Print}
+    \PY{n+nb}{print} \PY{p}{(}\PY{n}{kpss\PYZus{}saida}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Testa o valor\PYZhy{}p}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Conclusão:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{if} \PY{n}{kpss\PYZus{}saida}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.05}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{O valor\PYZhy{}p é maior que 0.05 e, portanto, não temos evidências para rejeitar a hipótese nula.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Essa série provavelmente é estacionária.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{O valor\PYZhy{}p é menor que 0.05 e, portanto, temos evidências para rejeitar a hipótese nula.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Essa série provavelmente não é estacionária.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Aplica os testes ADF e KPSS e plota o gráfico dos preços com as \PYZdq{}rolling statistics\PYZdq{}}
+\PY{n}{testa\PYZus{}estacionaridade}\PY{p}{(}\PY{n}{bg}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Resultado do Teste Dickey-Fuller:
+
+Estatística do Teste              0.876994
+Valor-p                           0.992783
+Número de Lags Consideradas       7.000000
+Número de Observações Usadas    267.000000
+Valor Crítico (1\%)               -3.455081
+Valor Crítico (5\%)               -2.872427
+Valor Crítico (10\%)              -2.572571
+dtype: float64
+
+Conclusão:
+
+O valor-p é maior que 0.05 e, portanto, não temos evidências para rejeitar a
+hipótese nula.
+Essa série provavelmente não é estacionária.
+
+Resultado do KPPS:
+
+Estatística do Teste            1.666622
+Valor-p                         0.010000
+Número de Lags Consideradas    16.000000
+Valor Crítico (10\%)             0.347000
+Valor Crítico (5\%)              0.463000
+Valor Crítico (2.5\%)            0.574000
+Valor Crítico (1\%)              0.739000
+dtype: float64
+
+Conclusão:
+
+O valor-p é menor que 0.05 e, portanto, temos evidências para rejeitar a
+hipótese nula.
+Essa série provavelmente não é estacionária.
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cria o gráfico de autocorrelação para séries temporais}
+\PY{n}{autocorrelation\PYZus{}plot}\PY{p}{(}\PY{n}{bg}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plota o gráfico}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_33_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Plot do gráfico ACF}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{211}\PY{p}{)}
+\PY{n}{plot\PYZus{}acf}\PY{p}{(}\PY{n}{bg}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lags}\PY{o}{=}\PY{l+m+mi}{60}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot do gráfico PACF}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{212}\PY{p}{)}
+\PY{n}{plot\PYZus{}pacf}\PY{p}{(}\PY{n}{bg}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lags}\PY{o}{=}\PY{l+m+mi}{60}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Mostra os gráficos}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    No gráfico, o eixo vertical indica a autocorrelação e o horizontal a
+defasagem. A área sombreada em azul indica onde é significativamente
+diferente de zero. Como é possível ver na imagem, temos \textbf{diversos
+valores ACF (barras verticais) acima do limite da área sombreada em
+azul}. Nesses casos, a \textbf{autocorrelação é diferente de zero,
+indicando que a série não é aleatória} -- conforme o esperado.
+
+\textbf{Algumas barras verticais estão dentro do limite da área
+sombreada em azul}, Ou seja, a \textbf{autocorrelação entre a série com
+alguns de seus lags é igual a zero, indicando que não há correlação}.
+
+Em termos simples: a área sombreada em azul aponta a significância. Se
+ultrapassa é porque tem correlação. Cada barra no gráfico ACF representa
+o nível de correlação entre a série e seus atrasos em ordem cronológica.
+\textbf{A área sombreada em azul indica se o nível de correlação entre a
+série e cada atraso é significativo ou não}.
+
+Com base na análise visual do gráfico ACF sugere que a série de preços
+médios do Boi Gordo é não estacionária, o que nos leva ao problema de
+inferimos a causa e buscar uma maneira de tratar a não estacionárida.
+Para isso usaremos dois métodos para tornar esta série estacionária para
+que possamos fazer previsões, estes são:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Transformação de Box-Cox}
+\item
+  \textbf{Diferenciação}
+\end{itemize}
+
+    \hypertarget{transformauxe7uxe3o-de-box-cox}{%
+\subsubsection{Transformação de
+Box-Cox}\label{transformauxe7uxe3o-de-box-cox}}
+
+Para tentar tornar a série estacionária a primeira coisa que faremos é
+uma transformação Box-Cox. Essa transformação consiste em uma maneira de
+transformar variáveis dependentes \textbf{``não normal''} em
+\textbf{normal}. A normalidade é uma suposição importante para muitas
+técnicas estatísticas; se seus dados não forem normais, a aplicação de
+um Box-Cox implica que você poderá executar um número mais amplo de
+testes.
+
+Após feita esta transformação, vamos realizar um novo teste
+Dickey-Fueller Aumentado e plotar os novos gráficos de autocorrelação
+para saber se estes dois processos foram removidos.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{bg\PYZus{}box}\PY{p}{,} \PY{n}{lam\PYZus{}value} \PY{o}{=} \PY{n}{boxcox}\PY{p}{(}\PY{n}{bg}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Valor Ideal de Lambda: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{lam\PYZus{}value}\PY{p}{)}
+\PY{n}{bg\PYZus{}box} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{bg\PYZus{}box}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{bg}\PY{o}{.}\PY{n}{index}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Visualizando a transformação}
+\PY{n}{bg\PYZus{}box}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Valor Ideal de Lambda: 0.184456
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Data
+1997-07-31    4.516578
+1997-08-31    4.494352
+1997-09-30    4.467970
+1997-10-31    4.547593
+1997-11-30    4.524078
+Freq: M, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{testa\PYZus{}estacionaridade}\PY{p}{(}\PY{n}{bg\PYZus{}box}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Resultado do Teste Dickey-Fuller:
+
+Estatística do Teste             -0.510177
+Valor-p                           0.890015
+Número de Lags Consideradas       3.000000
+Número de Observações Usadas    271.000000
+Valor Crítico (1\%)               -3.454713
+Valor Crítico (5\%)               -2.872265
+Valor Crítico (10\%)              -2.572485
+dtype: float64
+
+Conclusão:
+
+O valor-p é maior que 0.05 e, portanto, não temos evidências para rejeitar a
+hipótese nula.
+Essa série provavelmente não é estacionária.
+
+Resultado do KPPS:
+
+Estatística do Teste            1.691847
+Valor-p                         0.010000
+Número de Lags Consideradas    16.000000
+Valor Crítico (10\%)             0.347000
+Valor Crítico (5\%)              0.463000
+Valor Crítico (2.5\%)            0.574000
+Valor Crítico (1\%)              0.739000
+dtype: float64
+
+Conclusão:
+
+O valor-p é menor que 0.05 e, portanto, temos evidências para rejeitar a
+hipótese nula.
+Essa série provavelmente não é estacionária.
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{autocorrelation\PYZus{}plot}\PY{p}{(}\PY{n}{bg\PYZus{}box}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_39_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Plot do gráfico ACF}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{211}\PY{p}{)}
+\PY{n}{plot\PYZus{}acf}\PY{p}{(}\PY{n}{bg\PYZus{}box}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lags}\PY{o}{=}\PY{l+m+mi}{60}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot do gráfico PACF}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{212}\PY{p}{)}
+\PY{n}{plot\PYZus{}pacf}\PY{p}{(}\PY{n}{bg\PYZus{}box}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lags}\PY{o}{=}\PY{l+m+mi}{60}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Mostra os gráficos}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_40_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Com base nos teste de Dickey-Fuller Aumentado e com base nos gráficos da
+função de autocorrelação somente a transformação de Box-Cox não foi
+possível transformar a serie histórica de preços do Boi-Gordo em
+estacionária, assim ainda não e possível poder fazer qualquer previsão
+com base nestes dados. Para dar sequência vamos agora realizar uma
+diferenciação de Primeira Ordem.
+
+    \hypertarget{diferenciauxe7uxe3o}{%
+\subsubsection{Diferenciação}\label{diferenciauxe7uxe3o}}
+
+Nesta técnica, tomamos a diferença da observação em um determinado
+instante com a do instante anterior. A diferenciação é realizada
+subtraindo a observação anterior da observação atual:
+
+\(difference_t = observation_t - observation_{t-1}\)
+
+A inversão do processo é necessária quando uma previsão deve ser
+convertida novamente na escala original. Este processo pode ser
+revertido adicionando a observação no passo anterior ao valor da
+diferença.
+
+\(inverted_t = differenced_t + observation_{t-1}\)
+
+\textbf{Ordem da Diferença}
+
+Alguma estrutura temporal ainda pode existir após a execução de uma
+operação de diferenciação, como no caso de uma tendência não linear.
+
+Como tal, o processo de diferenciação pode ser repetido mais de uma vez
+até que toda a dependência temporal seja removida. O número de vezes que
+a diferenciação é realizada é chamado de ordem da diferença. Na primeira
+diferenciação temos a Diferenciação de Primeira Ordem e assim por
+diante.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{bg\PYZus{}diff} \PY{o}{=} \PY{n}{bg\PYZus{}box} \PY{o}{\PYZhy{}} \PY{n}{bg\PYZus{}box}\PY{o}{.}\PY{n}{shift}\PY{p}{(}\PY{p}{)}
+\PY{n}{bg\PYZus{}diff}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{testa\PYZus{}estacionaridade}\PY{p}{(}\PY{n}{bg\PYZus{}diff}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_44_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Resultado do Teste Dickey-Fuller:
+
+Estatística do Teste           -8.804961e+00
+Valor-p                         2.063694e-14
+Número de Lags Consideradas     2.000000e+00
+Número de Observações Usadas    2.710000e+02
+Valor Crítico (1\%)             -3.454713e+00
+Valor Crítico (5\%)             -2.872265e+00
+Valor Crítico (10\%)            -2.572485e+00
+dtype: float64
+
+Conclusão:
+
+O valor-p é menor que 0.05 e, portanto, temos evidências para rejeitar a
+hipótese nula.
+Essa série provavelmente é estacionária.
+
+Resultado do KPPS:
+
+Estatística do Teste            0.034242
+Valor-p                         0.100000
+Número de Lags Consideradas    16.000000
+Valor Crítico (10\%)             0.347000
+Valor Crítico (5\%)              0.463000
+Valor Crítico (2.5\%)            0.574000
+Valor Crítico (1\%)              0.739000
+dtype: float64
+
+Conclusão:
+
+O valor-p é maior que 0.05 e, portanto, não temos evidências para rejeitar a
+hipótese nula.
+Essa série provavelmente é estacionária.
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{autocorrelation\PYZus{}plot}\PY{p}{(}\PY{n}{bg\PYZus{}diff}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_45_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Seleciona a ordem do lag a ser utilizado}
+\PY{n}{data}\PY{o}{=}\PY{n}{bg\PYZus{}diff}
+\PY{n}{model}\PY{o}{=}\PY{n}{smt}\PY{o}{.}\PY{n}{AR}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+\PY{n}{order}\PY{o}{=}\PY{n}{smt}\PY{o}{.}\PY{n}{AR}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{o}{.}\PY{n}{select\PYZus{}order}\PY{p}{(}\PY{n}{ic}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{maxlag}\PY{o}{=}\PY{l+m+mi}{25}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Best lag order = }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{order}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Best lag order = 20
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Plot do gráfico ACF}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{211}\PY{p}{)}
+\PY{n}{plot\PYZus{}acf}\PY{p}{(}\PY{n}{bg\PYZus{}diff}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lags}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot do gráfico PACF}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{212}\PY{p}{)}
+\PY{n}{plot\PYZus{}pacf}\PY{p}{(}\PY{n}{bg\PYZus{}diff}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lags}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Mostra os gráficos}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_47_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Agora sim, conseguimos transformar a série em uma série estacionaria e
+remover a autocorrelação que estava presente nos dados até antes da
+diferenciação. Antes de partir para criação do modelos vamos dividir o
+conjunto de dados em treino e teste para que possamos avaliar as
+previsões do modelo quando novos dados são apresentados aos mesmos.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Função Para o Cálculo da Acurácia}
+\PY{k}{def} \PY{n+nf}{performace}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{:}
+    \PY{n}{mse} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{y\PYZus{}pred} \PY{o}{\PYZhy{}} \PY{n}{y\PYZus{}true}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+    \PY{n}{mape} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{p}{(}\PY{n}{y\PYZus{}true} \PY{o}{\PYZhy{}} \PY{n}{y\PYZus{}pred}\PY{p}{)} \PY{o}{/} \PY{n}{y\PYZus{}true}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{100}
+    \PY{k}{return} \PY{p}{(}\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MSE das previsões é }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{mse}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{o}{+}
+                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{RMSE das previsões é }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{mse}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{o}{+}
+                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{MAPE das previsões é }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{mape}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{seasonal-autoregressive-integrated-moving-average-sarima}{%
+\subsubsection{Seasonal Autoregressive Integrated Moving-Average
+(SARIMA)}\label{seasonal-autoregressive-integrated-moving-average-sarima}}
+
+A Média Móvel Integrada Autoregressiva Sazonal, SARIMA ou ARIMA Sazonal,
+é uma extensão do ARIMA que suporta explicitamente dados de séries
+temporais univariadas com um componente sazonal.
+
+Esse modelo adiciona três novos hiperparâmetros para especificar a
+regressão automática (AR), a diferenciação (I) e a média móvel (MA) para
+o componente sazonal da série, além de um parâmetro adicional para o
+período da sazonalidade.
+
+\textbf{Elementos de Tendência:}
+
+No modelo SARIMA existem três elementos de tendência que requerem
+configuração. Eles são iguais ao modelo ARIMA, especificamente:
+
+\begin{itemize}
+\tightlist
+\item
+  \(p\): Ordem de regressão automática da tendência.
+\item
+  \(d\): Ordem de diferenciação da tendência.
+\item
+  \(q\): Ordem média móvel de tendência.
+\end{itemize}
+
+\textbf{Elementos de Sazonalidade:}
+
+E temos mais quatro elementos sazonais que não fazem parte do ARIMA e
+que devem ser configurados no modelo SARIMA. Eles são:
+
+\begin{itemize}
+\tightlist
+\item
+  \(P\): Ordem autoregressiva sazonal.
+\item
+  \(D\): Ordem da diferença sazonal.
+\item
+  \(Q\): Ordem da média móvel sazonal.
+\item
+  \(m\): O número de etapas de tempo para um único período sazonal. Por
+  exemplo, um S de 12 para dados mensais sugere um ciclo sazonal anual.
+\end{itemize}
+
+\textbf{Notação SARIMA:} Um modelo SARIMA\((p,d,q)(P,D,Q,m)\) é
+representado da seguinte forma:
+
+\[\begin{align*} 
+\phi(L)\Phi(L)\Delta^d\Delta^D = \Theta(L)\Phi(L)\varepsilon_t
+\end{align*}\]
+
+    Usando um Modelo \textbf{Auto-Arima} para retornar os melhores
+parâmetros de ordem da série, para o menor valor possível da Estatística
+AIC.
+
+Fazer uma análise manual completa de séries temporais pode ser uma
+tarefa tediosa, especialmente quando você tem muitos conjuntos de dados
+para analisar. É preferível automatizar a tarefa de seleção de modelo
+com a pesquisa em grade (Grid Search). Para o SARIMA, como temos muitos
+parâmetros, a pesquisa em grade pode levar horas para ser concluída em
+um conjunto de dados se definirmos o limite de cada parâmetro muito
+alto. Definir limites muito altos também tornará seu modelo muito
+complexo e superestimará os dados de treinamento.
+
+Para evitar o longo tempo de execução e o problema de sobreajuste
+(overfitting), aplicamos o que é conhecido como princípio de parcimônia,
+onde criamos uma combinação de todos os parâmetros tais que
+\(p + d + q + P + D + Q ≤ 6\). Outra abordagem é definir cada parâmetro
+como 0 ou 1 ou 2 e fazer a pesquisa na grade usando o \textbf{AIC} em
+cada combinação.
+
+Usaremos a segunda opção, chamada Grid Search Stepwise. Vou definir
+limites pequenos para os hiperparâmetros, mas você pode testar outros
+valores se deseja.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Buscando pela ordem ideal para o modelo}
+\PY{c+c1}{\PYZsh{} A função pm.auto\PYZus{}arima aplica o Grid Search e retorna o melhor modelo}
+\PY{n}{model\PYZus{}v1} \PY{o}{=} \PY{n}{pm}\PY{o}{.}\PY{n}{auto\PYZus{}arima}\PY{p}{(}\PY{n}{bg\PYZus{}box}\PY{p}{,} 
+                         \PY{n}{seasonal}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} 
+                         \PY{n}{m}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{,} 
+                         \PY{n}{d}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} 
+                         \PY{n}{D}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} 
+                         \PY{n}{max\PYZus{}p}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} 
+                         \PY{n}{max\PYZus{}q}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} 
+                         \PY{n}{trace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} 
+                         \PY{n}{error\PYZus{}action}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ignore}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                         \PY{n}{suppress\PYZus{}warnings}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Performing stepwise search to minimize aic
+Fit ARIMA(2,1,2)x(1,0,1,12) [intercept=True]; AIC=-600.829, BIC=-571.924,
+Time=2.033 seconds
+Fit ARIMA(0,1,0)x(0,0,0,12) [intercept=True]; AIC=-577.837, BIC=-570.611,
+Time=0.069 seconds
+Fit ARIMA(1,1,0)x(1,0,0,12) [intercept=True]; AIC=-588.522, BIC=-574.070,
+Time=0.495 seconds
+Fit ARIMA(0,1,1)x(0,0,1,12) [intercept=True]; AIC=-594.090, BIC=-579.638,
+Time=0.573 seconds
+Fit ARIMA(0,1,0)x(0,0,0,12) [intercept=False]; AIC=-569.654, BIC=-566.041,
+Time=0.043 seconds
+Fit ARIMA(2,1,2)x(0,0,1,12) [intercept=True]; AIC=-593.123, BIC=-567.831,
+Time=1.322 seconds
+Fit ARIMA(2,1,2)x(1,0,0,12) [intercept=True]; AIC=-593.378, BIC=-568.087,
+Time=2.049 seconds
+Fit ARIMA(2,1,2)x(2,0,1,12) [intercept=True]; AIC=-598.667, BIC=-566.149,
+Time=6.177 seconds
+Fit ARIMA(2,1,2)x(1,0,2,12) [intercept=True]; AIC=-598.502, BIC=-565.984,
+Time=6.077 seconds
+Fit ARIMA(2,1,2)x(0,0,0,12) [intercept=True]; AIC=-593.075, BIC=-571.396,
+Time=0.595 seconds
+Fit ARIMA(2,1,2)x(0,0,2,12) [intercept=True]; AIC=-591.159, BIC=-562.254,
+Time=5.208 seconds
+Fit ARIMA(2,1,2)x(2,0,0,12) [intercept=True]; AIC=-591.507, BIC=-562.602,
+Time=4.519 seconds
+Fit ARIMA(2,1,2)x(2,0,2,12) [intercept=True]; AIC=-597.518, BIC=-561.387,
+Time=7.581 seconds
+Fit ARIMA(1,1,2)x(1,0,1,12) [intercept=True]; AIC=-603.211, BIC=-577.919,
+Time=1.927 seconds
+Fit ARIMA(1,1,2)x(0,0,1,12) [intercept=True]; AIC=-595.114, BIC=-573.435,
+Time=1.025 seconds
+Fit ARIMA(1,1,2)x(1,0,0,12) [intercept=True]; AIC=-595.217, BIC=-573.538,
+Time=1.149 seconds
+Fit ARIMA(1,1,2)x(2,0,1,12) [intercept=True]; AIC=-601.753, BIC=-572.848,
+Time=5.006 seconds
+Fit ARIMA(1,1,2)x(1,0,2,12) [intercept=True]; AIC=-602.049, BIC=-573.144,
+Time=5.239 seconds
+Fit ARIMA(1,1,2)x(0,0,0,12) [intercept=True]; AIC=-595.052, BIC=-576.987,
+Time=0.446 seconds
+Fit ARIMA(1,1,2)x(0,0,2,12) [intercept=True]; AIC=-593.151, BIC=-567.860,
+Time=4.037 seconds
+Fit ARIMA(1,1,2)x(2,0,0,12) [intercept=True]; AIC=-593.510, BIC=-568.218,
+Time=3.188 seconds
+Fit ARIMA(1,1,2)x(2,0,2,12) [intercept=True]; AIC=-599.624, BIC=-567.106,
+Time=5.874 seconds
+Fit ARIMA(0,1,2)x(1,0,1,12) [intercept=True]; AIC=-605.048, BIC=-583.370,
+Time=1.334 seconds
+Fit ARIMA(0,1,2)x(0,0,1,12) [intercept=True]; AIC=-596.839, BIC=-578.774,
+Time=0.490 seconds
+Fit ARIMA(0,1,2)x(1,0,0,12) [intercept=True]; AIC=-596.949, BIC=-578.883,
+Time=0.544 seconds
+Fit ARIMA(0,1,2)x(2,0,1,12) [intercept=True]; AIC=-603.522, BIC=-578.230,
+Time=3.793 seconds
+Fit ARIMA(0,1,2)x(1,0,2,12) [intercept=True]; AIC=-603.787, BIC=-578.495,
+Time=4.653 seconds
+Fit ARIMA(0,1,2)x(0,0,0,12) [intercept=True]; AIC=-596.829, BIC=-582.376,
+Time=0.188 seconds
+Fit ARIMA(0,1,2)x(0,0,2,12) [intercept=True]; AIC=-594.889, BIC=-573.211,
+Time=2.005 seconds
+Fit ARIMA(0,1,2)x(2,0,0,12) [intercept=True]; AIC=-595.279, BIC=-573.600,
+Time=1.943 seconds
+Fit ARIMA(0,1,2)x(2,0,2,12) [intercept=True]; AIC=-601.359, BIC=-572.454,
+Time=4.838 seconds
+Fit ARIMA(0,1,1)x(1,0,1,12) [intercept=True]; AIC=-601.496, BIC=-583.431,
+Time=1.403 seconds
+Fit ARIMA(0,1,3)x(1,0,1,12) [intercept=True]; AIC=-602.841, BIC=-577.549,
+Time=2.123 seconds
+Fit ARIMA(1,1,1)x(1,0,1,12) [intercept=True]; AIC=-604.750, BIC=-583.071,
+Time=1.755 seconds
+Fit ARIMA(1,1,3)x(1,0,1,12) [intercept=True]; AIC=-601.185, BIC=-572.280,
+Time=2.512 seconds
+Total fit time: 92.243 seconds
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Sumário do modelo}
+\PY{n}{model\PYZus{}v1}\PY{o}{.}\PY{n}{summary}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<class 'statsmodels.iolib.summary.Summary'>
+"""
+                                      SARIMAX Results
+================================================================================
+============
+Dep. Variable:                                    y   No. Observations:
+275
+Model:             SARIMAX(0, 1, 2)x(1, 0, [1], 12)   Log Likelihood
+308.524
+Date:                              Fri, 29 May 2020   AIC
+-605.048
+Time:                                      11:06:30   BIC
+-583.370
+Sample:                                           0   HQIC
+-596.347
+                                              - 275
+Covariance Type:                                opg
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+intercept      0.0010      0.002      0.616      0.538      -0.002       0.004
+ma.L1          0.2695      0.064      4.180      0.000       0.143       0.396
+ma.L2         -0.1407      0.047     -2.980      0.003      -0.233      -0.048
+ar.S.L12       0.9382      0.087     10.796      0.000       0.768       1.108
+ma.S.L12      -0.8584      0.133     -6.478      0.000      -1.118      -0.599
+sigma2         0.0061      0.000     22.020      0.000       0.006       0.007
+================================================================================
+===
+Ljung-Box (Q):                       34.41   Jarque-Bera (JB):
+637.32
+Prob(Q):                              0.72   Prob(JB):
+0.00
+Heteroskedasticity (H):               1.61   Skew:
+1.23
+Prob(H) (two-sided):                  0.02   Kurtosis:
+10.06
+================================================================================
+===
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-
+step).
+"""
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Agora que obtemos as melhores combinações de parâmetros de ordem do
+modelo podemos treina-lo e assim começar a fazer as nossas previsões
+para o preço do Boi Gordo.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cria o Modelo SARIMA}
+\PY{n}{sarima} \PY{o}{=} \PY{n}{sm}\PY{o}{.}\PY{n}{tsa}\PY{o}{.}\PY{n}{SARIMAX}\PY{p}{(}\PY{n}{bg\PYZus{}box}\PY{p}{,} 
+                        \PY{n}{order}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,} 
+                        \PY{n}{seasonal\PYZus{}order}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{12}\PY{p}{)}\PY{p}{,} 
+                        \PY{n}{enforce\PYZus{}stationarity}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} 
+                        \PY{n}{enforce\PYZus{}invertibility}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Treinamento (Fit) do modelo}
+\PY{n}{result} \PY{o}{=} \PY{n}{sarima}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Sumário do modelo}
+\PY{n}{result}\PY{o}{.}\PY{n}{summary}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<class 'statsmodels.iolib.summary.Summary'>
+"""
+                                      SARIMAX Results
+================================================================================
+============
+Dep. Variable:                                    y   No. Observations:
+275
+Model:             SARIMAX(0, 1, 2)x(1, 0, [1], 12)   Log Likelihood
+285.137
+Date:                              Fri, 29 May 2020   AIC
+-560.275
+Time:                                      11:06:31   BIC
+-542.490
+Sample:                                  07-31-1997   HQIC
+-553.124
+                                       - 05-31-2020
+Covariance Type:                                opg
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+ma.L1          0.2654      0.064      4.167      0.000       0.141       0.390
+ma.L2         -0.1502      0.048     -3.101      0.002      -0.245      -0.055
+ar.S.L12       0.9061      0.044     20.387      0.000       0.819       0.993
+ma.S.L12      -0.8388      0.084    -10.038      0.000      -1.003      -0.675
+sigma2         0.0061      0.000     22.838      0.000       0.006       0.007
+================================================================================
+===
+Ljung-Box (Q):                       33.12   Jarque-Bera (JB):
+711.29
+Prob(Q):                              0.77   Prob(JB):
+0.00
+Heteroskedasticity (H):               1.66   Skew:
+1.26
+Prob(H) (two-sided):                  0.02   Kurtosis:
+10.72
+================================================================================
+===
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-
+step).
+"""
+\end{Verbatim}
+\end{tcolorbox}
+        
+    A implenetação SARIMAX nos permite testar diversos parâmetros, como
+tendência, componente sazonal e ruído, para obter o melhor desempenho do
+modelo. O gráfico PACF representa o valor do decimo oitavo 3
+significativamente diferente de zero.
+
+O valor de \(p\) pode ser escolhido como \(3\). Para o valor \(q\), o
+ACF representa o primeiro atraso apenas como um valor considerável
+diferente de zero, mas, para selecionar o melhor da gama de modelos, é
+possível ajustar SARIMAX a um valor maior, por exemplo, \(q\) da faixa
+(0, 3) Componente sazonal \(D = 0\) e parâmetro de diferença \(d = 1\).
+Os parâmetros \(Q\) e \(P\) serão selecionados com base no melhor modelo
+da faixa.
+
+    \hypertarget{diagnuxf3stico-do-modelo}{%
+\subsubsection{Diagnóstico do Modelo:}\label{diagnuxf3stico-do-modelo}}
+
+Em séries temporais, um dos principais objetivos tende a ser que os
+\textbf{resíduos do nosso modelo não sejam correlacionados e sejam
+normalmente distribuídos com média zero}. Se esse critério não for
+atendido é bem provavel que o nosso modelo não seja adequado aos dados e
+o mesmo pode ser melhorado ainda mais.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Diagnóstico do modelo}
+\PY{n}{result}\PY{o}{.}\PY{n}{plot\PYZus{}diagnostics}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_60_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    O diagnóstico do modelo sugere que o resíduo do modelo é normalmente
+distribuído com base no seguinte:
+
+No gráfico superior direito, a linha vermelha do KDE segue de perto a
+linha \(N(0,1)\). Onde \(N(0,1)\) é a notação padrão para uma
+distribuição normal com média 0 e desvio padrão de 1. \textbf{Essa é uma
+boa indicação de que os resíduos são normalmente distribuídos}.
+
+O gráfico QQ no canto inferior esquerdo mostra que a distribuição
+ordenada de resíduos (pontos azuis) segue a tendência linear das
+amostras coletadas de uma distribuição normal padrão, com alguns
+pequenos outliers. Esta é uma forte indicação de que os resíduos do
+modelo \textbf{SARIMAX(0, 1, 2)(1, 0, 1, 12)} são normalmente
+distribuídos.
+
+Os resíduos ao longo do tempo (gráfico superior esquerdo) não exibem
+nenhum padrão óbvio de sazonalidade e parecem ser \textbf{ruído branco}
+(movimentos puramente aleatório). O gráfico de autocorrelação confirma
+este fato no canto inferior direito, que mostra que os resíduos da série
+temporal têm baixa correlação com os seus lags.
+
+Agora que temos a certeza que este é um bom modelo para poder prever os
+preços médios mensais da arroba do boi gordo, vamos fazer algumas
+previsões com os gráficos para que possamos ver o ajustamento dos preços
+com as previsões feitas pelo modelo.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Plota o gráfico com o ajustamento da curva para o modelo treinado}
+\PY{c+c1}{\PYZsh{} Pega as predições a partir do ano de 2001 até o ano 2020}
+\PY{n}{pred} \PY{o}{=} \PY{n}{result}\PY{o}{.}\PY{n}{get\PYZus{}prediction}\PY{p}{(}\PY{n}{start}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2001\PYZhy{}01\PYZhy{}31}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{dynamic}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Obtém os intervalos de confiança}
+\PY{n}{pred\PYZus{}ci} \PY{o}{=} \PY{n}{inv\PYZus{}boxcox}\PY{p}{(}\PY{n}{pred}\PY{o}{.}\PY{n}{conf\PYZus{}int}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lam\PYZus{}value}\PY{p}{)}
+
+
+\PY{n}{fig} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Figure}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Evolução dos preços do Boi Gordo}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{bg\PYZus{}box}\PY{o}{.}\PY{n}{index}\PY{p}{,} 
+                         \PY{n}{y}\PY{o}{=}\PY{n}{inv\PYZus{}boxcox}\PY{p}{(}\PY{n}{bg\PYZus{}box}\PY{p}{,} \PY{n}{lam\PYZus{}value}\PY{p}{)}\PY{p}{,}
+                         \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{fillcolor}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(0,0,0,1)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Preços Normalizados}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} SARIMA(2,0,1)(2,1,1,12)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{pred\PYZus{}ci}\PY{o}{.}\PY{n}{index}\PY{p}{,}
+                         \PY{n}{y}\PY{o}{=}\PY{n}{inv\PYZus{}boxcox}\PY{p}{(}\PY{n}{pred}\PY{o}{.}\PY{n}{predicted\PYZus{}mean}\PY{p}{,} \PY{n}{lam\PYZus{}value}\PY{p}{)}\PY{p}{,}
+                         \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                         \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SARIMA(2,0,1)x(2,1,1,12)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Intervalo de confiança de 95\PYZpc{}}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{pred\PYZus{}ci}\PY{o}{.}\PY{n}{index}\PY{p}{,} 
+                         \PY{n}{y}\PY{o}{=}\PY{n}{pred\PYZus{}ci}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} 
+                         \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{fill}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tonexty}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                         \PY{n}{fillcolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(0,176,246,0.2)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{line\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(255,255,255,0)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Intervalo de Confiança 95}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Intervalo de confiança de \PYZhy{}95\PYZpc{}}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{pred\PYZus{}ci}\PY{o}{.}\PY{n}{index}\PY{p}{,} 
+                         \PY{n}{y}\PY{o}{=}\PY{n}{pred\PYZus{}ci}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} 
+                         \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{fill}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tonexty}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{fillcolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(0,176,246,0.2)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{line\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(255,255,255,0)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Intervalo de Confiança \PYZhy{}95}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Define o layout}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{xaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Período}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{yaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valor Normalizado}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{width}\PY{o}{=}\PY{l+m+mi}{900}\PY{p}{,} 
+                  \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{540}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plota o gráfico}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_62_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Como podemos ver os modelo parece se ajustar muito bem aos dados do
+preços do Boi Gordo, agora ver checar as as métricas referentes ao erro
+do modelo.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Obtém os valores das previsões do modelo}
+\PY{n}{y\PYZus{}forecasted} \PY{o}{=} \PY{n}{pred}\PY{o}{.}\PY{n}{predicted\PYZus{}mean}
+
+\PY{c+c1}{\PYZsh{} Obtém uma amostra do dos dados para o tede}
+\PY{n}{y\PYZus{}truth} \PY{o}{=} \PY{n}{bg\PYZus{}box}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2014\PYZhy{}01\PYZhy{}01}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Calculando a performance do modelo}
+\PY{n}{sarima\PYZus{}results} \PY{o}{=} \PY{n}{performace}\PY{p}{(}\PY{n}{bg\PYZus{}box}\PY{p}{,} \PY{n}{pred}\PY{o}{.}\PY{n}{predicted\PYZus{}mean}\PY{p}{)}
+\PY{n}{sarima\PYZus{}results}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+MSE das previsões é 0.01
+RMSE das previsões é 0.08
+MAPE das previsões é 0.82
+    \end{Verbatim}
+
+    As métricas escolhidas também indicam um que o modelo se ajustou muito
+bem aos dados. Com tudo isso pronto podemos então fazer as previsões
+para os próximos 12 meses e com isso obter os valores para a arroba do
+boi gordo para os próximos 12 meses
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Plota o gráfico com as previsões um passo a frente}
+\PY{c+c1}{\PYZsh{} Pega as previsões um passo a frente a partir de junho 2020 à maio de 2021}
+\PY{n}{pred\PYZus{}uc} \PY{o}{=} \PY{n}{result}\PY{o}{.}\PY{n}{get\PYZus{}forecast}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{l+m+mi}{48}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Intervalo de confiança das previsões um passo a frente}
+\PY{n}{pred\PYZus{}ci} \PY{o}{=} \PY{n}{inv\PYZus{}boxcox}\PY{p}{(}\PY{n}{pred\PYZus{}uc}\PY{o}{.}\PY{n}{conf\PYZus{}int}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lam\PYZus{}value}\PY{p}{)}
+
+\PY{n}{fig} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Figure}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Evolução dos preços do Boi Gordo}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{bg\PYZus{}box}\PY{o}{.}\PY{n}{index}\PY{p}{,} 
+                         \PY{n}{y}\PY{o}{=}\PY{n}{inv\PYZus{}boxcox}\PY{p}{(}\PY{n}{bg\PYZus{}box}\PY{p}{,} \PY{n}{lam\PYZus{}value}\PY{p}{)}\PY{p}{,}
+                         \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{fillcolor}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(0,0,0,1)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Preços Normalizado}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Previsões um passo a frente}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{pred\PYZus{}ci}\PY{o}{.}\PY{n}{index}\PY{p}{,}
+                         \PY{n}{y}\PY{o}{=}\PY{n}{inv\PYZus{}boxcox}\PY{p}{(}\PY{n}{pred\PYZus{}uc}\PY{o}{.}\PY{n}{predicted\PYZus{}mean}\PY{p}{,} \PY{n}{lam\PYZus{}value}\PY{p}{)}\PY{p}{,}
+                         \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                         \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Previsão}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Intervalo de confiança de 95\PYZpc{}}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{pred\PYZus{}ci}\PY{o}{.}\PY{n}{index}\PY{p}{,} 
+                         \PY{n}{y}\PY{o}{=}\PY{n}{pred\PYZus{}ci}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} 
+                         \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{fill}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tonexty}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                         \PY{n}{fillcolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(0,176,246,0.2)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{line\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(255,255,255,0)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Intervalo de Confiança 95}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Intervalo de confiança de \PYZhy{}95\PYZpc{}}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{pred\PYZus{}ci}\PY{o}{.}\PY{n}{index}\PY{p}{,} 
+                         \PY{n}{y}\PY{o}{=}\PY{n}{pred\PYZus{}ci}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} 
+                         \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{fill}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tonexty}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{fillcolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(0,176,246,0.2)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{line\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(255,255,255,0)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Intervalo de Confiança \PYZhy{}95}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Define o layout}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{xaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Período}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+                  \PY{n}{yaxis\PYZus{}title}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valor Normalizado}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+                  \PY{n}{width}\PY{o}{=}\PY{l+m+mi}{900}\PY{p}{,} 
+                  \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{540}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plota o gráfico}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_67_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Salva o resultado das previsões em um DataFrame}
+\PY{n}{forecast2} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{inv\PYZus{}boxcox}\PY{p}{(}\PY{n}{result}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{start}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2020\PYZhy{}05\PYZhy{}31}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} 
+                                                   \PY{n}{end}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2021\PYZhy{}05\PYZhy{}31}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}\PY{p}{,} 
+                                                   \PY{n}{lam\PYZus{}value}\PY{p}{)}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Previsto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Visualiza as previsões}
+\PY{n}{forecast2}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              Previsto
+2020-05-31  198.409304
+2020-06-30  199.303792
+2020-07-31  199.587328
+2020-08-31  200.863397
+2020-09-30  202.978174
+2020-10-31  204.372804
+2020-11-30  207.979031
+2020-12-31  208.723822
+2021-01-31  207.673219
+2021-02-28  207.904183
+2021-03-31  208.479490
+2021-04-30  208.673599
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Os valores previstos pelo modelo paracem condizentes com a realidade
+tendo com os maior valores para a arroba do boi gordo durante o último
+trimestre do ano.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Teste de Ljung\PYZhy{}Box}
+\PY{n}{resultado\PYZus{}teste} \PY{o}{=} \PY{n}{sms}\PY{o}{.}\PY{n}{diagnostic}\PY{o}{.}\PY{n}{acorr\PYZus{}ljungbox}\PY{p}{(}\PY{n}{result}\PY{o}{.}\PY{n}{resid}\PY{p}{,} \PY{n}{lags}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{12}\PY{p}{]}\PY{p}{,} \PY{n}{boxpierce}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Valor\PYZhy{}p =}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{resultado\PYZus{}teste}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Valor-p = [0.00021039]
+    \end{Verbatim}
+
+    Com dito no começo deste projeto o mesmo tem a intenção da previsão da
+média mensal de preços da arroba do boi gordo. Até então o modelo criado
+se ajusta muito bem aos dados e provável que as suas previsões são
+consistentes com a realidade, o modelo deve ser monitorado durante os
+próximos meses para saber o tamanho do erro das previsões.
+
+Os próximos passos para poder melhorar este trabalho consistem em:
+
+\begin{itemize}
+\tightlist
+\item
+  Utilização da biblioteca Quandl para obtenção dos dados diários da
+  arroba do boi gordo;
+\item
+  Testar o mesmo modelo nos contratos futuros de boi gordo da B3;
+\item
+  Testar o modelo SARIMAX com variaveis exógenas;
+\item
+  Testar outros modelos que possam obter uma menor erro do que o atual
+  ex: Facebook Prophet, LSTM, DeepAR;
+\item
+  Deploy do modelo.
+\end{itemize}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

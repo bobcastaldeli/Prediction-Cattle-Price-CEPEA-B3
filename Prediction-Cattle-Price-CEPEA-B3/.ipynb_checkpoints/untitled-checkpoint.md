@@ -1,9 +1,0 @@
-# Previsões de Preços do Boi Gordo base Esalq
-
-Frequentemente, para as estimativas de preços e demanda, a compreensão do mercado de modo geral, é levado em consideração conhecimentos técnicos e práticos dos gestores adquiridos no dia a dia do negócio. No entanto, com o grande volume de dados que as empresas estão gerando nos ultimos anos, a gestão de riscos e a identificação das tendencias de mercado se tornaram mais simples com a adoção de métodos e técnicas analíticas dos dados. 
-Quando modelos de previsão são usados, são aplicados aos dados técnicas estatísticas para realizar estimativas mais precisas dos dados que está querendo prever. 
-Para a criação desses modelos, os dados históriocs, ou seja os preços obtidos em suas respectivas datas, são separados entre treino e teste. A parte de treinamento do modelo consiste em modelar, com ferramentas de programação de computador, formulas matemática e obter coeficientes para, posteriormente, testar o modelo com dados de teste e avaliar se o modelo apresentou baixa taxa de erros de previsões. 
-
-Este é um trabalho de previsão de séries temporais do indicador de preços do Boi Gordo. A série foi coletada e pode ser encontrada facilmente do site da [CEPEA - Centro de Estudos Avançados em Economia Aplicada](https://www.cepea.esalq.usp.br/br).
-
-A série referente aos preços do Boi Gordo é o principal indicador usado como base para criação e formação de preços para os contratos futuros do Boi Gordo da [B3](http://www.b3.com.br/pt_br/). Sobre a metólogia usada para criação deste indicador, é feita uma média dos preços da arroba do boi gordo de todas as regiões do estado de São Paulo. Para poder encontrar mais informações referentes a métodologia utilizada para criação deste indicador acesse este [link](https://www.cepea.esalq.usp.br/upload/kceditor/files/Cepea_B3_Metodologia_Indicador_BOI_02_01_2020.pdf).
