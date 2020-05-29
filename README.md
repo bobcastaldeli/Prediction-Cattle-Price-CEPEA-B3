@@ -1,4 +1,4 @@
-# [Previsão de Séries Temporais do Preço do Boi Gordo CEPEA/B3](https://nbviewer.jupyter.org/github/bobcastaldeli/Prediction-Cattle-Price-CEPEA-B3/blob/master/Prediction-Cattle-Price-CEPEA-B3/Cattle-Time-Series.ipynb#)
+# [Previsão de Séries Temporais do Preço do Boi Gordo CEPEA/B3](https://nbviewer.jupyter.org/github/bobcastaldeli/Prediction-Cattle-Price-CEPEA-B3/blob/master/Cattle-Time-Series.ipynb)
 
 Para realizar as estimativas de preços e demanda, até mesmo, compreeder o mercado de modo geral,
 frequentemente os gestores levam em consideração conhecimentos técnicos e práticos adquiridos no
@@ -20,7 +20,7 @@ Para poder encontrar mais informações referentes a métodologia utilizada para
 
 Como neste projeto foi utilizado a biblioteca Plotly para criar gráficos interativos para a análise de séries temporais
 e o arquivo .ipynb e presente neste repositório não carrega os dados você visualizar os gráficos interativos por meio deste
-[link](https://nbviewer.jupyter.org/github/bobcastaldeli/Prediction-Cattle-Price-CEPEA-B3/blob/master/Prediction-Cattle-Price-CEPEA-B3/Cattle-Time-Series.ipynb#)
+[link](https://nbviewer.jupyter.org/github/bobcastaldeli/Prediction-Cattle-Price-CEPEA-B3/blob/master/Cattle-Time-Series.ipynb)
 ou simplesmente clicando no título deste documento.
 
 Para este projeto foram utilizados os seguintes pacotes:
